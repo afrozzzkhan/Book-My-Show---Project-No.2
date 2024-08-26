@@ -22,7 +22,7 @@ app.use(
         directives: {
             defaultSrc: ["'self'"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            styleSrc: ["'self'", "https://fonts.googleapis.com"],
+            styleSrc: ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"],
             scriptSrc: ["'self'"],
             imgSrc: ["'self'"],
             connectSrc: ["'self'"]
