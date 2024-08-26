@@ -20,13 +20,19 @@ app.use((req, res, next) => {
     next();
 });
 
-// Set up Helmet with the correct Content Security Policy
+// Set up Helmet with the updated Content Security Policy
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["'self'"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            styleSrc: ["'self'", "https://fonts.googleapis.com", (req, res) => `'nonce-${res.locals.nonce}'`],
+            styleSrc: [
+                "'self'",
+                "https://fonts.googleapis.com",
+                "'unsafe-inline'" // Allow inline styles
+                // Alternatively, keep nonce if you have some inline styles you control
+                // `'nonce-${res.locals.nonce}'`
+            ],
             scriptSrc: ["'self'"],
             imgSrc: ["'self'"],
             connectSrc: ["'self'"]
