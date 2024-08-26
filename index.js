@@ -5,36 +5,13 @@ const userRoutes = require('./routes/userRoutes');
 const movieRoutes = require('./routes/movieRoutes');
 const theatreRoutes = require('./routes/theatreRoutes');
 const showRoutes = require('./routes/showRoutes');
-const bookingRoute = require('./routes/bookingRoute');
-const helmet = require('helmet');
-const crypto = require('crypto');
+const bookingRoute = require('./routes/bookingRoute')
 
 require('dotenv').config();
 
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true }))
 
-
-
-// Set up Helmet with the updated Content Security Policy
-app.use(
-    helmet.contentSecurityPolicy({
-      useDefaults: true,
-      directives: {
-        "font-src": ["'self'", "https://fonts.gstatic.com"],
-        "default-src": ["'self'"],
-        // Add other directives as needed
-      },
-    })
-);
-
-app.use((req, res, next) => {
-    res.setHeader(
-      'Content-Security-Policy',
-      "default-src 'self'; font-src 'self' https://fonts.gstatic.com"
-    );
-    next();
-});
 
 const dburl = "mongodb+srv://afrozkhanuak:kSMTeKwFukKdZuEC@cluster0.mh481zy.mongodb.net/Scaler?retryWrites=true&w=majority&appName=Cluster0"
 
