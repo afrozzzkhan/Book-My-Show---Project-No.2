@@ -7,22 +7,26 @@ const theatreRoutes = require('./routes/theatreRoutes');
 const showRoutes = require('./routes/showRoutes');
 const bookingRoute = require('./routes/bookingRoute');
 const helmet = require('helmet');
+const crypto = require('crypto');
 
 require('dotenv').config();
 
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true }))
 
-// Helmet to set security-related HTTP headers, including CSP
-app.use(helmet());
+// Generate a nonce for inline styles
+app.use((req, res, next) => {
+    res.locals.nonce = crypto.randomBytes(16).toString('base64');
+    next();
+});
 
-// Set up CSP to allow loading fonts from Google Fonts
+// Set up Helmet with the correct Content Security Policy
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
             defaultSrc: ["'self'"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            styleSrc: ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"],
+            styleSrc: ["'self'", "https://fonts.googleapis.com", (req, res) => `'nonce-${res.locals.nonce}'`],
             scriptSrc: ["'self'"],
             imgSrc: ["'self'"],
             connectSrc: ["'self'"]
