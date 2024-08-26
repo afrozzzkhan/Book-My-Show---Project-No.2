@@ -14,31 +14,27 @@ require('dotenv').config();
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true }))
 
-// Generate a nonce for inline styles
-app.use((req, res, next) => {
-    res.locals.nonce = crypto.randomBytes(16).toString('base64');
-    next();
-});
+
 
 // Set up Helmet with the updated Content Security Policy
 app.use(
     helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: ["'self'"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            styleSrc: [
-                "'self'",
-                "https://fonts.googleapis.com",
-                "'unsafe-inline'" // Allow inline styles
-                // Alternatively, keep nonce if you have some inline styles you control
-                // `'nonce-${res.locals.nonce}'`
-            ],
-            scriptSrc: ["'self'"],
-            imgSrc: ["'self'"],
-            connectSrc: ["'self'"]
-        },
+      useDefaults: true,
+      directives: {
+        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "default-src": ["'self'"],
+        // Add other directives as needed
+      },
     })
 );
+
+app.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self'; font-src 'self' https://fonts.gstatic.com"
+    );
+    next();
+});
 
 const dburl = "mongodb+srv://afrozkhanuak:kSMTeKwFukKdZuEC@cluster0.mh481zy.mongodb.net/Scaler?retryWrites=true&w=majority&appName=Cluster0"
 
