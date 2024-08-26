@@ -5,13 +5,30 @@ const userRoutes = require('./routes/userRoutes');
 const movieRoutes = require('./routes/movieRoutes');
 const theatreRoutes = require('./routes/theatreRoutes');
 const showRoutes = require('./routes/showRoutes');
-const bookingRoute = require('./routes/bookingRoute')
+const bookingRoute = require('./routes/bookingRoute');
+const helmet = require('helmet');
 
 require('dotenv').config();
 
 app.use(express.json()); // For parsing application/json
 app.use(express.urlencoded({ extended: true }))
 
+// Helmet to set security-related HTTP headers, including CSP
+app.use(helmet());
+
+// Set up CSP to allow loading fonts from Google Fonts
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            styleSrc: ["'self'", "https://fonts.googleapis.com"],
+            scriptSrc: ["'self'"],
+            imgSrc: ["'self'"],
+            connectSrc: ["'self'"]
+        },
+    })
+);
 
 const dburl = "mongodb+srv://afrozkhanuak:kSMTeKwFukKdZuEC@cluster0.mh481zy.mongodb.net/Scaler?retryWrites=true&w=majority&appName=Cluster0"
 
