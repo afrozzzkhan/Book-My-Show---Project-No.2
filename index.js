@@ -15,9 +15,13 @@ app.use(express.urlencoded({ extended: true }))
 
 const dburl = "mongodb+srv://afrozkhanuak:kSMTeKwFukKdZuEC@cluster0.mh481zy.mongodb.net/Scaler?retryWrites=true&w=majority&appName=Cluster0"
 
-mongoose.connect(dburl).then(function (connection) {
+mongoose.connect(dburl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // Increase the timeout
+}).then(function (connection) {
     console.log("connected to db");
-}).catch(err => console.log(err));  
+}).catch(err => console.log(err));
 
 app.use('/api/users', userRoutes);
 app.use('/api/movies', movieRoutes);
