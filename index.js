@@ -42,4 +42,5 @@ const path = require("path");
 __dirname = path.resolve();
 
 // render deployment
-app.use(express.static('./public'))
+// app.use(express.static('./public'))
+app.use(express.static(path.join('./public', 'build')));
